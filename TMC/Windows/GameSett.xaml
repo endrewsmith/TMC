@@ -1,0 +1,409 @@
+﻿<Window x:Class="TMC.GameSett"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TMC"
+        mc:Ignorable="d"
+        Title="Game Settings" Height="680" Width="350"  Background="#9e9e9e"  Closed="Window_Closed"
+        Loaded="Window_Loaded" SizeChanged="Window_SizeChanged">
+
+    <Window.Resources>
+        <Style x:Key="KeyInput" TargetType="{x:Type TextBox}">
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="Control.Background" Value="#d0d0d0" />
+            <Setter Property="Control.BorderBrush" Value="#4f4f4f" />
+            <Setter Property="Control.BorderThickness" Value="0" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Style.Triggers>
+                <Trigger Property="Control.IsFocused" Value="True">
+                    <Setter Property="Control.Background" Value="#ffffff" />
+                    <Setter Property="Control.BorderBrush" Value="#222222" />
+                    <Setter Property="Control.FontWeight" Value="Bold" />
+                    <Setter Property="Control.BorderThickness" Value="0" />
+                </Trigger>
+
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="NameParam" TargetType="{x:Type Border}">
+            <Setter Property="Control.VerticalAlignment" Value="Stretch" />
+            <Setter Property="Control.HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Control.Background" Value="#bababa" />
+            <Setter Property="Control.BorderBrush" Value="#4f4f4f" />
+            <Setter Property="Control.BorderThickness" Value="1 0 0 1" />
+            <Style.Triggers>
+                <Trigger Property="Control.IsFocused" Value="True">
+                    <Setter Property="Control.Background" Value="#ffffff" />
+                    <Setter Property="Control.BorderBrush" Value="#b4b4b4" />
+                    <Setter Property="Control.FontWeight" Value="Bold" />
+                    <Setter Property="Control.BorderThickness" Value="0" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="NameParamTbox" TargetType="{x:Type TextBlock}">
+            <Setter Property="Control.Margin" Value="6 0 0 0" />
+            <Setter Property="Control.HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextAlignment" Value="Left" />
+        </Style>
+    </Window.Resources>
+    
+    <Grid x:Name="MainGrid" Grid.IsSharedSizeScope="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Expander x:Name="Setting" Header="Setting" Grid.Row="0" Grid.Column="0" Margin ="10" BorderThickness="1"
+                  BorderBrush="#4f4f4f" Background="#c4c4c4" Expanded="Setting_Expanded">
+            <Grid x:Name="SettingGrid" Grid.IsSharedSizeScope="True" MaxHeight="100">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*" MinWidth="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Border Name="DirectDrawBor" Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="0" Grid.Column="0" >
+                    <TextBlock Name="DirectDrawTxt" Style="{StaticResource NameParamTbox}" Text="Enable DirectDraw"/>
+                </Border>
+                <Border Name="ResolutionBorder" Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="2" Grid.Column="0"  >
+                    <TextBlock Name="ResolutionTxt" Style="{StaticResource NameParamTbox}" Text="Screen Resolution"/>
+                </Border>
+                <Border Name="HUDBorder" Style="{StaticResource NameParam}" Grid.Row="1" Grid.Column="0" BorderThickness="0 1 0 0" >
+                    <TextBlock Name="HUDTxt" Style="{StaticResource NameParamTbox}" Text="New HUD"/>
+                </Border>
+                <Border Name="CameraBorder" Style="{StaticResource NameParam}" BorderThickness="0 1 0 0"  Grid.Row="3" Grid.Column="0" >
+                    <TextBlock Name="CameraTxt"  Style="{StaticResource NameParamTbox}" Text="Camera Type"/>
+                </Border>
+                <Border Name="AliasBorder" Style="{StaticResource NameParam}" Grid.Row="4" Grid.Column="0" BorderThickness="0 1 0 0" >
+                    <TextBlock Name="AliasTxt"  Style="{StaticResource NameParamTbox}" Text="Alias"/>
+                </Border>
+
+                <Viewbox Stretch="Uniform"  Grid.Row="0" Grid.Column="1" Margin ="0" HorizontalAlignment ="Left">
+                    <CheckBox x:Name="EnableDirectDraw"  HorizontalAlignment ="Center" VerticalAlignment="Center" Margin ="0"
+                              Checked="EnableDirectDraw_Checked" Unchecked="EnableDirectDraw_Unchecked" />
+                </Viewbox>
+
+                
+                <Viewbox Stretch="Uniform" Grid.Row="1" Grid.Column="1" Margin ="0" HorizontalAlignment ="Left">
+                    <CheckBox x:Name="newHUD"   HorizontalAlignment ="Center" VerticalAlignment="Center" Margin ="0"
+                              Checked="NewHUD_Checked" Unchecked="NewHUD_Unchecked" />
+                </Viewbox>
+                
+                    <ComboBox x:Name="ResolutionType" Grid.Row="2" Grid.Column="1" Height="22" Width="100" Margin ="0 0 6 0"
+                              HorizontalAlignment ="Left" VerticalAlignment="Stretch" SelectionChanged="ResolutionType_SelectionChanged">
+
+                    </ComboBox>
+                
+                <ComboBox x:Name="Camera" Grid.Row="3" Grid.Column="1" Height="22" Width="100" Margin ="0"
+                          SelectedIndex="0" HorizontalAlignment ="Left">
+                    <ComboBoxItem Content="PC"/>
+                    <ComboBoxItem Content="PlayStation 1"/>
+                </ComboBox>
+
+                <Border  Width="100" BorderThickness="1 1 1 0" Background="White" BorderBrush="#666666" Grid.Row="4" Grid.Column="1" Margin ="0"
+                         HorizontalAlignment ="Left" VerticalAlignment="Stretch"  >
+                    <TextBox Name="Alias"  BorderThickness="0" BorderBrush="#000000" HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"
+                             TextAlignment="Left" VerticalContentAlignment="Center"></TextBox>
+                </Border>
+
+            </Grid>
+        </Expander>
+
+        <Expander x:Name="KeySet" Header="Key Setting" Grid.Row="1" Grid.Column="2" Margin ="10" BorderThickness="1" BorderBrush="#4f4f4f"
+                  Background="#c4c4c4" Expanded="KeySet_Expanded">
+
+            <Grid x:Name="KeySetting" Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="1"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Border  Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Column="0" Margin ="0"  >
+                    <TextBlock Style="{StaticResource NameParamTbox}" Text="Forward"/>
+                </Border>
+                <Border   Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="1" Grid.Column="0" >
+                    <TextBlock  Style="{StaticResource NameParamTbox}" Text="Backward"/>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="2" Grid.Column="0" Margin ="0"  >
+                    <TextBlock    Style="{StaticResource NameParamTbox}" Text="Left"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="3" Grid.Column="0" Margin ="0"  >
+                    <TextBlock   Style="{StaticResource NameParamTbox}" Text="Right"/>
+                </Border>
+                <Border   Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="4" Grid.Column="0" Margin ="0"  >
+                    <TextBlock    Style="{StaticResource NameParamTbox}" Text="Combo Up"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="5" Grid.Column="0" Margin ="0"  >
+                    <TextBlock    Style="{StaticResource NameParamTbox}" Text="Combo Down"/>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="6" Grid.Column="0" Margin ="0"  >
+                    <TextBlock    Style="{StaticResource NameParamTbox}" Text="Combo Left"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="7" Grid.Column="0" Margin ="0"  >
+                    <TextBlock    Style="{StaticResource NameParamTbox}" Text="Combo Right"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="8" Grid.Column="0" Margin ="0"  >
+                    <TextBlock    Style="{StaticResource NameParamTbox}" Text="Next View"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="9  " Grid.Column="0" Margin ="0"  >
+                    <TextBlock    Style="{StaticResource NameParamTbox}" Text="Prev View"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="10  " Grid.Column="0" Margin ="0"  >
+                    <TextBlock    Style="{StaticResource NameParamTbox}" Text="Break"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="11  " Grid.Column="0" Margin ="0"  >
+                    <TextBlock    Style="{StaticResource NameParamTbox}" Text="Turbo"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="12  " Grid.Column="0" Margin ="0"  >
+                    <TextBlock    Style="{StaticResource NameParamTbox}" Text="Tight Turn"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="13" Grid.Column="0" Margin ="0"  >
+                    <TextBlock   Style="{StaticResource NameParamTbox}" Text="Machinegun"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="0" Grid.Column="3" Margin ="0"  >
+                    <TextBlock   Style="{StaticResource NameParamTbox}" Text="Fire"/>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="1" Grid.Column="3" Margin ="0"  >
+                    <TextBlock    Style="{StaticResource NameParamTbox}" Text="Next Weapon"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="2" Grid.Column="3" Margin ="0"  >
+                    <TextBlock   Style="{StaticResource NameParamTbox}" Text="Prev Weapon"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="3" Grid.Column="3" Margin ="0"  >
+                    <TextBlock  Style="{StaticResource NameParamTbox}" Text="Score"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="4" Grid.Column="3" Margin ="0"  >
+                    <TextBlock Style="{StaticResource NameParamTbox}" Text="Radar"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="2" Margin ="0"  >
+                    <TextBlock  Style="{StaticResource NameParamTbox}" TextAlignment ="Center" Text="Hot Keys For Weapons:"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="6" Grid.Column="3" Margin ="0"  >
+                    <TextBlock  Style="{StaticResource NameParamTbox}" Text="Special"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="7" Grid.Column="3" Margin ="0"  >
+                    <TextBlock  Style="{StaticResource NameParamTbox}" Text="Fire"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="8" Grid.Column="3" Margin ="0"  >
+                    <TextBlock  Style="{StaticResource NameParamTbox}" Text="Homing"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="9" Grid.Column="3" Margin ="0"  >
+                    <TextBlock  Style="{StaticResource NameParamTbox}" Text="Remote"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="10" Grid.Column="3" Margin ="0"  >
+                    <TextBlock  Style="{StaticResource NameParamTbox}" Text="Power"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="11" Grid.Column="3" Margin ="0"  >
+                    <TextBlock  Style="{StaticResource NameParamTbox}" Text="Napalm"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="12" Grid.Column="3" Margin ="0"  >
+                    <TextBlock  Style="{StaticResource NameParamTbox}" Text="Rico"/>
+                </Border>
+                <Border  Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="13" Grid.Column="3" Margin ="0"  >
+                    <TextBlock  Style="{StaticResource NameParamTbox}" Text="Light"/>
+                </Border>
+
+                <Border  Style="{StaticResource NameParam}" BorderThickness="1 1 1 0" Grid.Row="0" Grid.Column="1" Margin ="0"   >
+                    <TextBox Name="Key1" MaxLines="1" Style="{StaticResource KeyInput}"  PreviewKeyDown="Key1_PreviewKeyDown" />
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 1 0" Grid.Row="1" Grid.Column="1" Margin ="0"   >
+                    <TextBox Name="Key2"  Style="{StaticResource KeyInput}"   PreviewKeyDown="Key2_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 1 0" Grid.Row="2" Grid.Column="1" Margin ="0"   >
+                    <TextBox Name="Key3"  Style="{StaticResource KeyInput}"  PreviewKeyDown="Key3_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 1 0" Grid.Row="3" Grid.Column="1" Margin ="0"    >
+                    <TextBox Name="Key4"  Style="{StaticResource KeyInput}"  PreviewKeyDown="Key4_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 1 0"  Grid.Row="4" Grid.Column="1" Margin ="0"    >
+                    <TextBox Name="Key5"  Style="{StaticResource KeyInput}"  PreviewKeyDown="Key5_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 1 0" Grid.Row="5" Grid.Column="1" Margin ="0"    >
+                    <TextBox Name="Key6" Style="{StaticResource KeyInput}"  PreviewKeyDown="Key6_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 1 0" Grid.Row="6" Grid.Column="1" Margin ="0"    >
+                    <TextBox Name="Key7"  Style="{StaticResource KeyInput}"  PreviewKeyDown="Key7_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 1 0" Grid.Row="7" Grid.Column="1" Margin ="0"    >
+                    <TextBox Name="Key8"  Style="{StaticResource KeyInput}"  PreviewKeyDown="Key8_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 1 0" Grid.Row="8" Grid.Column="1" Margin ="0"    >
+                    <TextBox Name="Key9"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key9_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 1 0" Grid.Row="9" Grid.Column="1" Margin ="0"    >
+                    <TextBox Name="Key10"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key10_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 1 0" Grid.Row="10" Grid.Column="1" Margin ="0"    >
+                    <TextBox Name="Key11"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key11_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 1 0" Grid.Row="11" Grid.Column="1" Margin ="0"    >
+                    <TextBox Name="Key12"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key12_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 1 0" Grid.Row="12" Grid.Column="1" Margin ="0"    >
+                    <TextBox Name="Key13"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key13_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 1 0" Grid.Row="13" Grid.Column="1" Margin ="0"    >
+                    <TextBox Name="Key14"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key14_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="0" Grid.Column="4" Margin ="0"    >
+                    <TextBox Name="Key15"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key15_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="1" Grid.Column="4" Margin ="0"    >
+                    <TextBox Name="Key16"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key16_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="2" Grid.Column="4" Margin ="0"    >
+                    <TextBox Name="Key17"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key17_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="3" Grid.Column="4" Margin ="0"    >
+                    <TextBox Name="Key18"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key18_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="4" Grid.Column="4" Margin ="0"    >
+                    <TextBox Name="Key19"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key19_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="6" Grid.Column="4" Margin ="0"    >
+                    <TextBox Name="Key20"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key20_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="7" Grid.Column="4" Margin ="0"    >
+                    <TextBox Name="Key21"  Style="{StaticResource KeyInput}"  PreviewKeyDown="Key21_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="8" Grid.Column="4" Margin ="0"    >
+                    <TextBox Name="Key22"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key22_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="9" Grid.Column="4" Margin ="0"    >
+                    <TextBox Name="Key23"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key23_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="10" Grid.Column="4" Margin ="0"    >
+                    <TextBox Name="Key24"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key24_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="11" Grid.Column="4" Margin ="0"    >
+                    <TextBox Name="Key25"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key25_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="12" Grid.Column="4" Margin ="0"    >
+                    <TextBox Name="Key26"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key26_PreviewKeyDown"></TextBox>
+                </Border>
+                <Border Style="{StaticResource NameParam}" BorderThickness="1 1 0 0" Grid.Row="13" Grid.Column="4" Margin ="0"    >
+                    <TextBox Name="Key27"   Style="{StaticResource KeyInput}"  PreviewKeyDown="Key27_PreviewKeyDown"></TextBox>
+                </Border>
+            </Grid>
+        </Expander>
+        
+        <Expander x:Name="View" Header="View" Grid.Row="2" Grid.Column="0" Margin ="10" BorderThickness="1" BorderBrush="#4f4f4f"
+                  Background="#c4c4c4" Expanded="View_Expanded" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" MinWidth="110"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid x:Name="SettingView" Grid.IsSharedSizeScope="True" Grid.Row="0" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.3*" MinWidth="110"/>
+                        <ColumnDefinition Width="*" MinWidth="100"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Border  Style="{StaticResource NameParam}" BorderThickness="0 1 0 0" Grid.Row="0" Grid.Column="0" Margin ="0"
+                             HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" >
+                        <TextBlock    Style="{StaticResource NameParamTbox}" Text="HUD Size" />
+                    </Border>
+                    <Border  Style="{StaticResource NameParam}" BorderThickness="0 1 0 1" Grid.Row="1" Grid.Column="0" Margin ="0"
+                             HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" >
+                        <TextBlock  Style="{StaticResource NameParamTbox}" Text="Radar Size"/>
+                    </Border>
+                    <Border BorderThickness="1 1 1 0" MinWidth="100"  BorderBrush="#666666" Grid.Row="0" Grid.Column="1" Margin ="0"
+                            HorizontalAlignment ="Left" VerticalAlignment="Stretch"  >
+                        <TextBox  Name="HudTxt"  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"   TextAlignment="Center"
+                                  VerticalContentAlignment="Center" TextChanged="HudTxt_TextChanged" ></TextBox>
+                    </Border>
+                    <Border BorderThickness="1 1 1 1"  MinWidth="100" BorderBrush="#666666" Grid.Row="1" Grid.Column="1" Margin ="0"
+                            HorizontalAlignment ="Left" VerticalAlignment="Stretch"  >
+                        <TextBox Name="RadarTxt"   HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"   TextAlignment="Center"
+                                 VerticalContentAlignment="Center" TextChanged="RadarTxt_TextChanged"  ></TextBox>
+                    </Border>
+                </Grid>
+
+                <Border Grid.Row="1" Grid.Column="0" BorderThickness="1"  BorderBrush="#666666"   HorizontalAlignment ="Stretch"
+                        VerticalAlignment="Stretch" Margin ="2 6 2 2">
+                    <Grid  x:Name="ScreenSettingGrid"  Focusable="True" Grid.Row="1" Grid.Column="0"    HorizontalAlignment ="Stretch"
+                           VerticalAlignment="Stretch"  MinWidth="108">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.Background>
+                            <ImageBrush x:Name="ScreenSetting" x:FieldModifier="public" Stretch="None" ></ImageBrush>
+                        </Grid.Background>
+                    </Grid>
+                </Border>
+                
+                <Grid  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"  Grid.Row="1" Grid.Column="0"
+                       Grid.ColumnSpan="2" Margin ="2 6 2 2">
+                    <Grid  x:Name="ScreenSettingRadar" Margin ="5 5 0 0" Grid.Row="0" Focusable="True"  HorizontalAlignment ="Left"
+                           VerticalAlignment="Top" Opacity="0.78"  >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.Background>
+                            <ImageBrush x:Name="ScreenRadar" x:FieldModifier="public"></ImageBrush>
+                        </Grid.Background>
+                    </Grid>
+                </Grid>
+                
+                <Grid HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="0"
+                      Grid.ColumnSpan="2" Margin ="2 6 2 2">
+                    <Grid  x:Name="ScreenSettingHUD" Margin ="5" Grid.Row="0" Focusable="True"  HorizontalAlignment ="Right"
+                           VerticalAlignment="Bottom" Opacity="0.78">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.Background>
+                            <ImageBrush x:Name="ScreenHUD" x:FieldModifier="public"></ImageBrush>
+                        </Grid.Background>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Expander>
+    </Grid>
+</Window>

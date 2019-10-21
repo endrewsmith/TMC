@@ -1,0 +1,867 @@
+﻿<Window x:Class="TMC.LobbyWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        xmlns:local="clr-namespace:TMC"
+        mc:Ignorable="d"
+        SizeChanged="Window_SizeChanged"
+        Title="Lobby" Background="#FFB4B4B4" d:DesignWidth="200" d:DesignHeight="400"
+        Width="600" Height="650" Closed="Window_Closed" Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <Style x:Key="placeHolder" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <TextBox  Text="{Binding Path=Text,
+                                                RelativeSource={RelativeSource TemplatedParent}, 
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                 x:Name="textSource" 
+                                 Background="Transparent" 
+                                 Panel.ZIndex="2" />
+                            <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}"
+                                     Panel.ZIndex="1" TextAlignment="Center">
+                                <TextBox.Style>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Setter Property="Foreground" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Text, Source={x:Reference textSource}}" Value="" >
+                                                <Setter Property="Foreground" Value="LightGray" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="BtnCloseRoom" TargetType="{x:Type Button}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path = Test}" Value="true">
+                    <Setter Property="Background" Value = "Green" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ImgClose" TargetType="{x:Type Image}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Password}" Value="Yes">
+                    <Setter Property="Source" Value = "{Binding Path=ImgPassYes}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="ColorGamer" TargetType="{x:Type Grid}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path = Number}" Value="0">
+                    <Setter Property="Background" Value="#179420" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Number}" Value="1">
+                    <Setter Property="Background" Value="#a52918" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Number}" Value="2">
+                    <Setter Property="Background" Value="#296fa0" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Number}" Value="3">
+                    <Setter Property="Background" Value="#923bb6" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Number}" Value="4">
+                    <Setter Property="Background" Value="#509da8" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Number}" Value="5">
+                    <Setter Property="Background" Value="#8c7f2a" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Number}" Value="6">
+                    <Setter Property="Background" Value="#f02a70" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Number}" Value="7">
+                    <Setter Property="Background" Value="#4e4ef0" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ReadyCarColor" TargetType="{x:Type TextBlock}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path = Status}" Value="0">
+                    <Setter Property="Foreground" Value="#999999" />
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="TextBlock.TextAlignment" Value="Center"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Status}" Value="1">
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="TextBlock.TextAlignment" Value="Center"></Setter>
+                </DataTrigger>
+                
+                <DataTrigger Binding="{Binding Path = Car}" Value="0">
+                    <Setter Property="Text" Value="Hammerhead" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Car}" Value="1">
+                    <Setter Property="Text" Value="Outlaw 2" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Car}" Value="2">
+                    <Setter Property="Text" Value="Warthog" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Car}" Value="3">
+                    <Setter Property="Text" Value="Mr. Grimm" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Car}" Value="4">
+                    <Setter Property="Text" Value="Grasshopper" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Car}" Value="5">
+                    <Setter Property="Text" Value="Thumper" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Car}" Value="6">
+                    <Setter Property="Text" Value="Spectre" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Car}" Value="7">
+                    <Setter Property="Text" Value="Roadkill" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Car}" Value="8">
+                    <Setter Property="Text" Value="Twister" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Car}" Value="9">
+                    <Setter Property="Text" Value="Axel" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Car}" Value="10">
+                    <Setter Property="Text" Value="Mr. Slam" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Car}" Value="11">
+                    <Setter Property="Text" Value="Shadow" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Car}" Value="12">
+                    <Setter Property="Text" Value="Sweet Tooth" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Car}" Value="13">
+                    <Setter Property="Text" Value="Minion" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="Ping" TargetType="{x:Type TextBlock}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path = Status}" Value="0">
+                    <Setter Property="Foreground" Value="#333333" />
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="TextBlock.TextAlignment" Value="Center"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path = Status}" Value="1">
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="TextBlock.TextAlignment" Value="Center"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="Centering" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextBlock.TextAlignment" Value="Center"></Setter>
+        </Style>
+     
+        <Style x:Key="BtnRemove" TargetType="{x:Type Button}">
+            <Setter Property="FontSize" Value="12" />
+            <Style.Triggers>
+
+                <DataTrigger Binding="{Binding Path=Number}" Value="0">
+                    <Setter Property="Visibility" Value="Hidden" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding Path=OpenCloseIngame}" Value="Close">
+                    <Setter Property="Background" Value = "Red" />
+                    <Setter Property="Visibility" Value="Hidden" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding Path=OpenCloseIngame}" Value="Ingame">
+                    <Setter Property="Background" Value = "Blue" />
+                </DataTrigger>
+
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
+    <!-- Main container with all contents-->
+
+    <Grid x:Name="LobbyMainGrid" Grid.IsSharedSizeScope="True" SizeChanged="ResizeGrid_SizeChanged">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="C4" Height="*" MinHeight="0"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition x:Name="C5" Height="3*" MinHeight="200"></RowDefinition>
+        </Grid.RowDefinitions>
+        <!-- ________________________________________ Settings block __________________________________________________________ -->
+        <!-- Common container with settings-->
+
+        <Grid x:Name="LocalGrid"  Grid.Row="0" Background="#10000000" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" x:Name="C9" MinWidth="0" ></ColumnDefinition>
+                <ColumnDefinition Width="*"  ></ColumnDefinition>
+                <ColumnDefinition Width="auto" ></ColumnDefinition>
+                <!-- You cannot set a star in Width -->
+                <ColumnDefinition Width="*" x:Name="C8" MinWidth="0"></ColumnDefinition>
+                
+            </Grid.ColumnDefinitions>
+
+            <!-- Settings separator  -->
+            <GridSplitter Grid.Row="0" Grid.Column="2"    Width="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"
+                          Background="White"  DragCompleted="GridSplitter_DragCompleted" MaxWidth="{Binding ActualWidth}"></GridSplitter>
+
+            <Grid x:Name="MapSettingGrid" Grid.Row="0" Grid.Column="0" MouseDown ="Map_MouseDown" Margin ="2" Focusable="True"
+                  KeyDown="MapSettingGrid_KeyDown">
+                <Grid.ContextMenu>
+                    <ContextMenu x:Name="MapMenu" IsOpen="False" Visibility="Collapsed" Width="160">
+                        <MenuItem Header="Los Angeles" Click="map0"></MenuItem>
+                        <MenuItem Header="Moscow" Click="map1"></MenuItem>
+                        <MenuItem Header="Paris" Click="map2"></MenuItem>
+                        <MenuItem Header="Amazonia" Click="map3"></MenuItem>
+                        <MenuItem Header="New York" Click="map4"></MenuItem>
+                        <MenuItem Header="Antarctica" Click="map5"></MenuItem>
+                        <MenuItem Header="Holland" Click="map6"></MenuItem>
+                        <MenuItem Header="Hong Kong" Click="map7"></MenuItem>
+                        <MenuItem Header="Suicide Swamp" Click="map8"></MenuItem>
+                        <MenuItem Header="Assault on Cyburbia" Click="map9"></MenuItem>
+                        <MenuItem Header="Rooftop Combat" Click="map10"></MenuItem>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+                <Grid.Background>
+                    <ImageBrush x:Name="MapSetting" x:FieldModifier="public"></ImageBrush>
+                </Grid.Background>
+            </Grid>
+
+            <Grid Name="CarSettingImgGrid" Grid.Row="0" Grid.Column="1" Focusable="True" MouseDown="CarSettingImg_MouseDown"
+                  KeyDown="CarSettingImgGrid_KeyDown" PreviewMouseDown="CarSettingImgGrid_PreviewMouseDown">
+
+                <Grid.ContextMenu>
+                    <ContextMenu x:Name="CarMenu" IsOpen="False" Visibility="Collapsed" Width="160">
+                        <MenuItem Header="Hammerhead" Click="car0"></MenuItem>
+                        <MenuItem Header="Outlaw 2" Click="car1"></MenuItem>
+                        <MenuItem Header="Warthog" Click="car2"></MenuItem>
+                        <MenuItem Header="Mr. Grimm" Click="car3"></MenuItem>
+                        <MenuItem Header="Grasshopper" Click="car4"></MenuItem>
+                        <MenuItem Header="Thumper" Click="car5"></MenuItem>
+                        <MenuItem Header="Spectre" Click="car6"></MenuItem>
+                        <MenuItem Header="Roadkill" Click="car7"></MenuItem>
+                        <MenuItem Header="Twister" Click="car8"></MenuItem>
+                        <MenuItem Header="Axel" Click="car9"></MenuItem>
+                        <MenuItem Header="Mr. Slam" Click="car10"></MenuItem>
+                        <MenuItem Header="Shadow" Click="car11"></MenuItem>
+                        <MenuItem Header="Sweet Tooth" Click="car12"></MenuItem>
+                    </ContextMenu>
+                    </Grid.ContextMenu>
+
+                    <Image Name="CarSettingImg" Stretch="Fill" Grid.Row="0" Grid.Column="1"   Margin ="2"/>
+            </Grid>
+            
+            <!-- Container for account settings, type of game and team -->
+
+            <Grid x:Name="SetGrid" Grid.Row="0" Grid.Column="3" Grid.IsSharedSizeScope="True" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="1.2*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Border BorderBrush="#000000" BorderThickness="1 1 1 1" Grid.Row="0" Grid.Column="0"></Border>
+                <Border BorderBrush="#000000" BorderThickness="1 0 1 1" Grid.Row="1" Grid.Column="0"></Border>
+                <Border BorderBrush="#000000" BorderThickness="1 0 1 1" Grid.Row="2" Grid.Column="0"></Border>
+                <Border BorderBrush="#000000" BorderThickness="1 0 1 1" Grid.Row="3" Grid.Column="0"></Border>
+
+                <!-- Account setup container -->
+
+                <Grid x:Name="SetGrid1" Grid.Row="0" Grid.Column="0" Grid.IsSharedSizeScope="True" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Border BorderBrush="#000000" BorderThickness="1 1 1 1" Margin ="5 4 0 4" MouseDown="Border_MouseDown"
+                            MouseUp="Border_MouseUp" >
+                        <Viewbox Stretch="Uniform" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"   >
+                            <Grid HorizontalAlignment ="Stretch" VerticalAlignment="Stretch">
+                                <TextBlock Name="ScoreText" Height="32" Width="32" HorizontalAlignment ="Stretch"
+                                           VerticalAlignment="Center" TextAlignment="Center" SizeChanged="Team_SizeChanged"
+                                           TextWrapping="Wrap" Padding ="0 9 0 0"></TextBlock>
+                                <Image Name="ImgScore" Grid.Row="0" Grid.Column="0" HorizontalAlignment ="Stretch"
+                                       VerticalAlignment="Stretch"  />
+                            </Grid>
+                        </Viewbox>
+                    </Border>
+
+                    <Border Name="ScoreBorder" BorderThickness="1" Background="White" BorderBrush="#000000" Grid.Row="0"
+                            Grid.Column="1" Margin ="4"  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" >
+                        <TextBlock Name="ScoreClient"   HorizontalAlignment ="Stretch" VerticalAlignment="Center" TextAlignment="Center"
+                                   SizeChanged="ScoreClient_SizeChanged" TextWrapping="Wrap" />
+
+                    </Border>
+                    <Border Name="LineScor" BorderThickness="1" Background="White" BorderBrush="#000000" Grid.Row="0" Grid.Column="1"
+                            Margin ="4"  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"  >
+                        <TextBox Name="Score"  BorderThickness="0" BorderBrush="#000000" HorizontalAlignment ="Stretch"
+                                 VerticalAlignment="Stretch"   TextAlignment="Center" SizeChanged="Score_SizeChanged_1"
+                                 TextChanged="Score_TextChanged" TextWrapping="Wrap" VerticalContentAlignment="Center"></TextBox>
+                    </Border>
+
+                    <!-- Closed the account settings container -->
+                </Grid>
+
+
+                <!-- Game type settings container -->
+
+                <Grid x:Name="SetGrid2" Grid.Row="1" Grid.Column="0" Grid.IsSharedSizeScope="True" >
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Border Name="TeamBorderImg" BorderBrush="#000000" BorderThickness="1 1 1 1" Margin ="5 4 0 4"
+                            MouseDown="TeamBorderImg_MouseDown" MouseUp="TeamBorderImg_MouseUp" >
+                        <Viewbox Stretch="Uniform" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"   >
+
+                            <Grid  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch">
+                                <TextBlock Name="TeamText" Height="32" Width="32" HorizontalAlignment ="Stretch" VerticalAlignment="Center"
+                                           TextAlignment="Center" SizeChanged="Team_SizeChanged" TextWrapping="Wrap"
+                                           Padding ="0 9 0 0"></TextBlock>
+                                <Image Name="imgTeam" Grid.Row="0" Grid.Column="0" HorizontalAlignment ="Stretch"
+                                       VerticalAlignment="Stretch" />
+                            </Grid>
+                        </Viewbox>
+                    </Border>
+
+                    <Border Name="TeamBorder" BorderThickness="1" Background="White" BorderBrush="#000000" Grid.Row="0" Grid.Column="1"
+                            Margin ="4"  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" MouseDown=" TeamBorderImg_MouseDown">
+                        <TextBlock Name="Team"   HorizontalAlignment ="Stretch" VerticalAlignment="Center" TextAlignment="Center"
+                                   SizeChanged="Team_SizeChanged" TextWrapping="Wrap" />
+                    </Border>
+
+                    <!-- Closed the game type settings container -->
+                </Grid>
+
+
+                <!-- Command settings container -->
+
+                <Grid x:Name="SetGrid3" Grid.Row="2" Grid.Column="0" Grid.IsSharedSizeScope="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.2*"/>
+                        <ColumnDefinition x:Name="ClmBtnClose" Width="1.2*"/>
+                        <ColumnDefinition x:Name="ClmBtnUpd" Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button  x:Name="BtnGetKey"  Grid.Row="0"   Grid.Column="0"  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"
+                             Margin ="4 4 4 4" Click="BtnGetKey_Click">Key</Button>
+                    <Button  x:Name="BtnClose" Style="{StaticResource BtnCloseRoom}" Grid.Row="0"   Grid.Column="1"  MinWidth="30"
+                             HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"  Margin ="0 4 4 4" Click="BtnClose_Click">
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="TextBlockClose">Close?</TextBlock>
+                            <Image x:Name="ImgCloseRoom" Margin="0,0,0,0" />
+                        </StackPanel>
+                    </Button>
+                    <Button  x:Name="BtnUpdate" Grid.Row="0"   Grid.Column="2"  MinWidth="30" HorizontalAlignment ="Stretch"
+                             VerticalAlignment="Stretch"  Margin ="0 4 4 4" Click="BtnUpdate_Click">
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="UpdateTxt">Upd</TextBlock>
+                            <Image x:Name="ImgUpdRoom" Margin="0,0,0,0" />
+                        </StackPanel>
+                    </Button>
+
+                    <!-- closed the command settings container -->
+                </Grid>
+
+
+                <!-- Ready and Go button container -->
+
+                <Grid x:Name="SetGrid4" Grid.Row="3" Grid.Column="0" Grid.IsSharedSizeScope="True">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.5*"/>
+                        <ColumnDefinition x:Name="ClmBtnGo" Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button x:Name="Ready" Grid.Row="0"   Grid.Column="0" HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"
+                            Margin ="4" Click="Ready_Click">Ready</Button>
+                    <Button x:Name="BtnGo" Grid.Row="0"  Grid.Column="2" MinWidth="30" HorizontalAlignment ="Stretch"
+                            VerticalAlignment="Stretch"  Margin ="0 4 4 4" Click="BtnGo_Click">GO</Button>
+
+                    <!-- Closed the container buttons "Ready" and "Go" -->
+                </Grid>
+                <!-- Closed the container for account settings, such as game and team -->
+            </Grid>
+            <!-- Closed the general container with settings -->
+        </Grid>
+
+
+
+
+        <!-- ________________________________________ Chat and player list block __________________________________________________________ -->
+
+        <!-- Settings and chat separator -->
+        <GridSplitter Name="TopSplitter" Grid.Row="1" Height="4" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                      Background="#cccccc" DragCompleted="GridSplitter_DragCompleted" MaxHeight="{Binding ActualHeight}"></GridSplitter>
+
+        <!-- Chat and player list container -->
+
+        <Grid x:Name="ChatListGrid" Grid.Row="3" Grid.Column="0" Grid.IsSharedSizeScope="True" MaxWidth = "{Binding ActualHeight}" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="C6" Width="*" MinWidth="0"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition x:Name="C7" Width="*" MinWidth="0"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <!-- Chat and list separator -->
+            <GridSplitter Grid.Row="0" Grid.Column="1"    Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Center"
+                          Background="#cccccc" DragCompleted="GridSplitter_DragCompleted" MaxWidth="{Binding ActualWidth}"/>
+
+            <!-- Chat and send container -->
+
+            <Grid x:Name="ChatSplitSendGrid" Grid.Row="0" Grid.Column="0" Grid.IsSharedSizeScope="True" >
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <!-- Chat container -->
+
+                <Grid x:Name="ChatSplitGrid" Grid.Row="0" Grid.Column="0" Grid.IsSharedSizeScope="True"
+                      SizeChanged="ResizeGrid_SizeChanged" MaxHeight = "{Binding ActualHeight}" >
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition x:Name="C0" Height="*" MinHeight ="30"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition x:Name="C2" Height="*" MinHeight ="30"></RowDefinition>
+                        
+                    </Grid.RowDefinitions>
+
+                    <!-- Separator of chat and your messages -->
+                    
+                    <GridSplitter Grid.Row="1" Height="4" VerticalAlignment="Center" HorizontalAlignment="Stretch" Background="#bbbbbb"
+                                  DragCompleted="GridSplitter_DragCompleted" />
+                    <RichTextBox x:Name="Chat" x:FieldModifier="public" IsReadOnly="True" Grid.Row="0" MinHeight ="30" MinWidth="120"
+                                 HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"  Margin ="2 2 1 0"
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto" Block.LineHeight="0.2">
+                        <FlowDocument >
+                            <Paragraph>
+                                
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+                    <RichTextBox x:Name="TextSend" x:FieldModifier="public" Grid.Row="2" MinHeight ="30" MinWidth="120"
+                                 HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"  Margin ="2 0 1 4"
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto" Block.LineHeight="0.2"
+                                 PreviewKeyDown="TextSend_PreviewKeyDown">
+                        <FlowDocument >
+                            <Paragraph>
+
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+
+                <!-- Closed the chat container -->
+                    
+                </Grid>
+
+
+
+                <!-- Message sending container -->
+
+                <Grid x:Name="SendGrid" Grid.Row="4" Grid.Column="0" Grid.IsSharedSizeScope="True" >
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    
+                    <Button x:Name="Btn_Send" Grid.Column="0"  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"
+                            Margin ="4 0 4 4" Click="Btn_Send_Click">Send</Button>
+
+                <!-- Closed the messaging container -->
+                    
+                </Grid>
+
+            <!-- Closed the chat and send container -->
+
+            </Grid>
+
+
+            <!-- Player list and settings container -->
+
+            <Grid x:Name="ListSettingGrid" Grid.Row="0" Grid.Column="2" Grid.IsSharedSizeScope="True" >
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition  Height="*" MaxHeight="130"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Border BorderBrush="#000000" BorderThickness="1 1 1 1" Grid.Row="0" Margin ="2"></Border>
+                
+                <DataGrid x:Name="GamerGrid" BorderBrush="#000000" BorderThickness="0" HeadersVisibility="Column"
+                          AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" CanUserDeleteRows="False"
+                          ItemsSource="{Binding}"
+          CanUserReorderColumns="False" SelectionUnit="FullRow" GridLinesVisibility ="All" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          
+          CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" Grid.Row="0" HorizontalAlignment ="Stretch"
+                          VerticalAlignment="Stretch"  Margin ="4" ColumnHeaderHeight ="20" RowHeight ="20"
+                          MouseDoubleClick="GamerGrid_MouseDoubleClick" Background="#FFB4B4B4">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="Background" Value="#C0C0C0" />
+                            <Setter Property="BorderBrush" Value="Black" />
+                            <Setter Property="BorderThickness" Value="0,1,1,1" />
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="true">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+ 
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Status}" Value="1" />
+                                        <Condition Binding="{Binding Path=Team}" Value="0" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value = "#ffffff" />
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Status}" Value="1" />
+                                        <Condition Binding="{Binding Path=Team}" Value="1" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value = "#c6ffa7" />
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Status}" Value="1" />
+                                        <Condition Binding="{Binding Path=Team}" Value="2" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value = "#ffcba9" />
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Status}" Value="1" />
+                                        <Condition Binding="{Binding Path=Team}" Value="3" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value = "#d4f1ec" />
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Status}" Value="1" />
+                                        <Condition Binding="{Binding Path=Team}" Value="4" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value = "#c7f2d1" />
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Status}" Value="1" />
+                                        <Condition Binding="{Binding Path=Team}" Value="5" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value = "#75c8cc" />
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Status}" Value="1" />
+                                        <Condition Binding="{Binding Path=Team}" Value="6" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value = "#fcfdb1" />
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Status}" Value="1" />
+                                        <Condition Binding="{Binding Path=Team}" Value="7" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value = "#e4c5e4" />
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Status}" Value="1" />
+                                        <Condition Binding="{Binding Path=Team}" Value="8" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value = "#fcdcdf" />
+                                </MultiDataTrigger>
+
+                            </Style.Triggers>
+                        </Style>
+
+                    </DataGrid.RowStyle>
+
+                    <DataGrid.Columns>
+
+                        <DataGridTemplateColumn Header="" MaxWidth="7" >
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="{x:Type DataGridColumnHeader}">
+                                    <Setter Property="Background" Value="#C0C0C0" />
+                                    <Setter Property="BorderBrush" Value="Black" />
+                                    <Setter Property="BorderThickness" Value="1,1,1,1" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellStyle>
+                                <Style TargetType="{x:Type DataGridCell}">
+                                    <Setter Property="Background" Value="#C0C0C0" />
+                                    <Setter Property="BorderBrush" Value="Black" />
+                                    <Setter Property="BorderThickness" Value="1,0,0,0" />
+                                </Style>
+                            </DataGridTemplateColumn.CellStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate >
+                                    <Grid Style="{StaticResource  ColorGamer}" HorizontalAlignment ="Stretch"
+                                          VerticalAlignment="Stretch" Margin="0">
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn Header="Ping" Width="30" Binding="{Binding Ping}" ElementStyle="{StaticResource Ping}">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    <Setter Property="Background" Value="#cdcdcd" />
+                                    <Setter Property="BorderBrush" Value="Black" />
+                                    <Setter Property="BorderThickness" Value="0,1,1,1" />
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}" ElementStyle="{StaticResource Centering}">
+                            <DataGridTextColumn.HeaderStyle >
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    <Setter Property="Background" Value="#C0C0C0" />
+                                    <Setter Property="BorderBrush" Value="Black" />
+                                    <Setter Property="BorderThickness" Value="0,1,1,1" />
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Car" Width="*"  ElementStyle="{StaticResource ReadyCarColor}" >
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    <Setter Property="Background" Value="#C0C0C0" />
+                                    <Setter Property="BorderBrush" Value="Black" />
+                                    <Setter Property="BorderThickness" Value="0,1,1,1" />
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="T" Width="20" Binding="{Binding Team}" ElementStyle="{StaticResource Centering}">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    <Setter Property="Background" Value="#C0C0C0" />
+                                    <Setter Property="BorderBrush" Value="Black" />
+                                    <Setter Property="BorderThickness" Value="0,1,1,1" />
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTemplateColumn Header="X" Width="20">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button x:Name="RemovePlayer"  Background="Transparent" BorderBrush="Transparent"
+                                            BorderThickness="0" Style="{StaticResource BtnRemove}"
+                                            Tag="{Binding SelectedIndex, ElementName = GamerGrid}" Click="RemovePlayer_Click"
+                                            Focusable="False" >
+                                        <StackPanel >
+                                            <TextBlock Text="X" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Margin =" 0 -2 0 0"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <Border BorderBrush="#000000" Grid.Row="1" Grid.Column="3" BorderThickness="1 1 1 1" Margin ="2"></Border>
+
+                <Grid x:Name="LineSettingGrid" Grid.Row="1" Grid.Column="3" Grid.IsSharedSizeScope="True" Margin ="4 0 4 0"
+                      MaxHeight="120" MinHeight="120">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <!-- Score setup container -->
+
+                    <Grid x:Name="LineSetGridMap" Grid.Row="0" Grid.Column="0" Grid.IsSharedSizeScope="True">
+                        <Grid.ColumnDefinitions>
+
+                            <ColumnDefinition Width="1.7*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Border Name="LineMap2" BorderThickness="1" Background="White" BorderBrush="#000000" Grid.Row="0"
+                                Grid.Column="0" Margin ="4 5 4 2"  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"
+                                MouseDown="Map_MouseDown">
+                            <TextBlock Name="LineMap" Grid.Row="0" Grid.Column="0" HorizontalAlignment ="Stretch"
+                                       VerticalAlignment="Center"  SizeChanged="Score_SizeChanged" TextAlignment="Center"
+                                       Padding="0" FontSize="12" TextWrapping="Wrap" />
+                        </Border>
+
+                        <Border Name="LineScoreBorder" BorderThickness="1" Background="White" BorderBrush="#000000" Grid.Row="0"
+                                Grid.Column="1" Margin ="0 5 4 2"  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"  >
+                            <TextBlock Name="LineScoreClient"  Grid.Row="0" Grid.Column="1" HorizontalAlignment ="Stretch"
+                                       VerticalAlignment="Center"   TextWrapping="Wrap" TextAlignment="Center" />
+                        </Border>
+                        <Border Name="LineScoreBord" BorderThickness="1" Background="White" BorderBrush="#000000" Grid.Row="1"
+                                Grid.Column="1" Margin ="0 5 4 2"  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"  >
+                            <TextBox Name="LineScore"  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"   BorderThickness="0"
+                                     BorderBrush="#ffffff" TextAlignment="Center" TextWrapping="Wrap" VerticalContentAlignment="Center"
+                                     TextChanged="LineScore_TextChanged"></TextBox>
+                        </Border>
+
+                    <!-- Closed the account settings container -->
+                    </Grid>
+
+                    <!-- Game type settings container -->
+
+                    <Grid x:Name="LineGridCarTeam" Grid.Row="1" Grid.Column="0" Grid.IsSharedSizeScope="True" >
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.7*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Border Name="LineCarBorder" BorderThickness="1" Background="White" BorderBrush="#000000" Grid.Row="0"
+                                Grid.Column="0" Margin ="4 3 4 4"  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"
+                                MouseDown="CarSettingImg_MouseDown" >
+                            <TextBlock Name="LineCar"  Grid.Row="0" Grid.Column="0" HorizontalAlignment ="Stretch"
+                                       VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" />
+                        </Border>
+                        <Border Name="LineTeamBorder" BorderThickness="1" Background="White" BorderBrush="#000000" Grid.Row="0"
+                                Grid.Column="1" Margin ="0 3 4 4"  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"
+                                MouseDown=" TeamBorderImg_MouseDown" >
+                            <TextBlock Name="LineTeam"  Grid.Row="0" Grid.Column="1" HorizontalAlignment ="Stretch"
+                                       VerticalAlignment="Center"   TextWrapping="Wrap" TextAlignment="Center" />
+                        </Border>
+
+                    <!-- Closed the game type settings container -->
+                    </Grid>
+
+                    <!-- Command settings container -->
+
+                    <Grid x:Name="LineSetGridClose" Grid.Row="2" Grid.Column="0" Grid.IsSharedSizeScope="True" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.85*"/>
+                            <ColumnDefinition x:Name="LineClose" Width="0.85*"/>
+                            <ColumnDefinition x:Name="LineUdp" Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Button  x:Name="BtnGetKeyBottom"  Grid.Row="0"   Grid.Column="0"  HorizontalAlignment ="Stretch"
+                                 VerticalAlignment="Stretch"  Margin ="4 2 4 4" Click="BtnGetKeyBottom_Click">Get Key</Button>
+                        <Button  x:Name="BtnCloseBottom" Style="{StaticResource BtnCloseRoom}" Grid.Row="0"   Grid.Column="1"
+                                 MinWidth="30" HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"  Margin ="0 2 4 4"
+                                 Click="BtnCloseBottom_Click">Close Room?</Button>
+                        
+                        <Button  x:Name="BtnUpdBottom"  Grid.Row="0"   Grid.Column="2"  MinWidth="30" HorizontalAlignment ="Stretch"
+                                 VerticalAlignment="Stretch"  Margin ="0 2 4 4" Click="BtnUpdBottom_Click">
+                            Update
+                        </Button>
+
+                    <!-- Closed the command settings container -->
+                    </Grid>
+
+                    <!-- "Ready" and "Go" button container -->
+
+                    <Grid x:Name="LineSetGridReady" Grid.Row="3" Grid.Column="0" Grid.IsSharedSizeScope="True" >
+
+                        <Grid.ColumnDefinitions>
+
+                            <ColumnDefinition Width="1.7*"/>
+                            <ColumnDefinition x:Name="LineGo" Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Button x:Name="LineBtnReady" Grid.Row="0"   Grid.Column="0" HorizontalAlignment ="Stretch"
+                                VerticalAlignment="Stretch"  Margin ="4 0 4 4" Click="Ready_Click">Ready</Button>
+                        <Button x:Name="LineBtnGo" Grid.Row="0"  Grid.Column="1" MinWidth="30" HorizontalAlignment ="Stretch"
+                                VerticalAlignment="Stretch"  Margin ="0 0 4 4" Click="LineBtnGo_Click" >GO</Button>
+
+                        <!-- Closed the container buttons "Ready" and "Go" -->
+                    </Grid>
+                </Grid>
+
+            <!-- Closed the player list and settings container -->
+            </Grid>
+
+        <!-- Closed the chat and player list container -->
+        </Grid>
+
+    <!-- Closed the main container with all contents -->
+    </Grid>
+
+</Window>

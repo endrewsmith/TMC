@@ -1,0 +1,660 @@
+﻿<Window x:Class="TMC.MainWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TMC"
+        mc:Ignorable="d"
+        Title="TMC" Height="580" Width="690" Background="#FFB4B4B4" Closing="Window_Closing" Loaded="Window_Loaded" >
+
+    <Window.Resources>
+        <Style x:Key="placeHolder" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <TextBox  Text="{Binding Path=Text,
+                                                RelativeSource={RelativeSource TemplatedParent}, 
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                 x:Name="textSource" MaxLines="1"
+                                 Background="Transparent" 
+                                 Panel.ZIndex="2" TextAlignment="Center" VerticalContentAlignment="Center" Foreground="#444444"/>
+                            <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}" Panel.ZIndex="1"
+                                     TextAlignment="Center" VerticalContentAlignment="Center" MaxLines="1">
+                                <TextBox.Style>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Setter Property="Foreground" Value="Transparent"/>
+                                        
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Text, Source={x:Reference textSource}}" Value="" >
+                                                <Setter Property="Foreground" Value="#989898" />
+                                            </DataTrigger>
+                                            <Trigger Property="Control.IsMouseOver" Value="True">
+                                                <Setter Property="Control.Background" Value="#b4b4b4" />
+                                                <Setter Property="Control.BorderBrush" Value="#b4b4b4" />
+                                                <Setter Property="Control.FontWeight" Value="Bold" />
+                                                <Setter Property="Control.BorderThickness" Value="0" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="Passw" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Password}" Value="No">
+                    <Setter Property="Visibility" Value = "Collapsed" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=OpenCloseIngame}" Value="Close">
+                    <Setter Property="Background" Value = "#eeb6a5" />
+                    <Setter Property="Visibility" Value = "Collapsed" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=HostCheck}" Value="lock">
+                    <Setter Property="Visibility" Value = "Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <TextBox  Text="{Binding Path=Text,
+                                                RelativeSource={RelativeSource TemplatedParent}, 
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                 x:Name="textSource" MaxLength="8" MaxLines="1"
+                                 Background="Transparent" 
+                                 Panel.ZIndex="2" TextAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap"  />
+                            <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}" Panel.ZIndex="1"
+                                     TextAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap" >
+                                <TextBox.Style>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Setter Property="Foreground" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Text, Source={x:Reference textSource}}" Value="" >
+                                                <Setter Property="Foreground" Value="#989898" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="BtnJoin" TargetType="{x:Type Button}">
+            <Setter Property="FontSize" Value="12" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=ModOrigin}" Value="Mod">
+                    <Setter Property="Background" Value = "#d3e4b5" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ModOrigin}" Value="Orig">
+                    <Setter Property="Background" Value = "#bcdfff" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=OpenCloseIngame}" Value="Close">
+                    <Setter Property="Background" Value = "#eeb6a5" />
+                    <Setter Property="Visibility" Value = "Collapsed" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Password}" Value="Yes">
+                    <Setter Property="Width" Value = "20" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=HostCheck}" Value="lock">
+                    <Setter Property="Visibility" Value = "Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TextJoin" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="12" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Password}" Value="Yes">
+                    <Setter Property="Text" Value = "+" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="Padding" Value="0 0 0 11" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Password}" Value="No">
+                    <Setter Property="Text" Value = "Join" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="Info" TargetType="{x:Type ComboBox}">
+            <Setter Property="FontSize" Value="12" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Comment}" Value="">
+                    <Setter Property="Visibility" Value = "Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="HostOnly" TargetType="{x:Type ComboBox}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=CountOne}" Value="1">
+                    <Setter Property="Visibility" Value = "Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="ImgClose" TargetType="{x:Type Image}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Password}" Value="Yes">
+                    <Setter Property="Source" Value = "{Binding Path=ImgPassYes}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="Centering" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextBlock.TextAlignment" Value="Center"></Setter>
+        </Style>
+        
+        <Style x:Key="Flat">
+            <Setter Property="Control.Background" Value="#b4b4b4" />
+            <Setter Property="Control.BorderBrush" Value="#b4b4b4" />
+            <Setter Property="Control.BorderThickness" Value="0" />
+            <Style.Triggers>
+                <Trigger Property="Control.IsMouseOver" Value="True">
+                    <Setter Property="Control.Background" Value="#b4b4b4" />
+                    <Setter Property="Control.BorderBrush" Value="#b4b4b4" />
+                    <Setter Property="Control.FontWeight" Value="Bold" />
+                    <Setter Property="Control.BorderThickness" Value="0" />
+                </Trigger>
+                <Trigger Property="Control.IsFocused" Value="True">
+                    <Setter Property="Control.Background" Value="#b4b4b4" />
+                    <Setter Property="Control.BorderBrush" Value="#b4b4b4" />
+                    <Setter Property="Control.BorderThickness" Value="0" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="Bold">
+            <Setter Property="Control.Background" Value="{x:Null}" />
+
+            <Style.Triggers>
+                <Trigger Property="Control.IsMouseOver" Value="True">
+                    <Setter Property="Control.FontWeight" Value="Bold" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="LocalMod">
+            <Setter Property="Control.BorderBrush" Value="#555555" />
+            <Setter Property="Control.Foreground" Value="#333333" />
+            <Setter Property="Control.BorderThickness" Value="1" />
+            <Style.Triggers>
+                <Trigger Property="Control.IsMouseOver" Value="True">
+                    <Setter Property="Control.Background" Value="#bbbbbb" />
+                    <Setter Property="Control.BorderBrush" Value="#777777" />
+                    <Setter Property="Control.FontWeight" Value="Bold" />
+                    <Setter Property="Control.BorderThickness" Value="1" />
+                    <Setter Property="Control.Foreground" Value="#333333" />
+                </Trigger>
+                <Trigger Property="Control.IsFocused" Value="True">
+                    <Setter Property="Control.Background" Value="#b4b4b4" />
+                    <Setter Property="Control.BorderBrush" Value="#b4b4b4" />
+                    <Setter Property="Control.BorderThickness" Value="0" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="JoinCreate">
+            <Setter Property="Control.BorderBrush" Value="#333333" />
+            <Setter Property="Control.Foreground" Value="#555555" />
+            <Setter Property="Control.BorderThickness" Value="1" />
+            <Style.Triggers>
+                <Trigger Property="Control.IsMouseOver" Value="True">
+                    <Setter Property="Control.Background" Value="#bbbbbb" />
+                    <Setter Property="Control.BorderBrush" Value="#777777" />
+                    <Setter Property="Control.FontWeight" Value="Bold" />
+                    <Setter Property="Control.BorderThickness" Value="1" />
+                    <Setter Property="Control.Foreground" Value="#333333" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="Menu">
+            <Setter Property="Control.Foreground" Value="#111111" />
+            <Setter Property="Control.BorderThickness" Value="1" />
+            <Style.Triggers>
+                <Trigger Property="Control.IsMouseOver" Value="True">
+                    <Setter Property="Control.FontWeight" Value="Bold" />
+                    <Setter Property="Control.Foreground" Value="#222222" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+    </Window.Resources>
+
+    <!-- Main container with all contents -->
+
+    <Grid x:Name="MainGrid" Grid.IsSharedSizeScope="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" MaxHeight="30"></RowDefinition>
+            <RowDefinition Height="auto" MinHeight="1"></RowDefinition>
+            <RowDefinition Name ="LocalModuleLine" Height="30" MaxHeight="30"></RowDefinition>
+            <RowDefinition Height="40" MaxHeight="40"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="20" MaxHeight="25"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border BorderBrush="#333333" BorderThickness="0 1 0 1" Grid.Row="2" Grid.Column="0" Margin ="4 0 4 0"
+                Background="#bbbbbb"></Border>
+        <Border BorderBrush="#333333" BorderThickness="1 1 1 0" Grid.Row="3" Grid.Column="0" Margin ="4 0 4 0" ></Border>
+
+        <!-- Menu container -->
+
+        <Grid x:Name="MenuGrid" Grid.Row="0" Grid.Column="0" Grid.IsSharedSizeScope="True" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="74"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="106"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" x:Name="MenuGridRow"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Border BorderBrush="#ffffff" BorderThickness="0 0 0 1" Grid.Row="0" Grid.Column="0" Margin ="0 0 0 0"
+                    Grid.ColumnSpan="4"></Border>
+            <Border  Name="Settings" Style="{StaticResource Menu}" Grid.Row="0" Grid.Column="0" Margin ="3 4 0 4"
+                     HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="1" MouseDown="Settings_MouseDown" >
+                <TextBlock  HorizontalAlignment ="Stretch" VerticalAlignment="Center" TextAlignment="Center"
+                            TextWrapping="Wrap"  >Settings</TextBlock>
+            </Border>
+            <Border  Name="View" Style="{StaticResource Menu}" Grid.Row="0" Grid.Column="1" Margin ="3 4 0 4"
+                     HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="1" MouseDown="View_MouseDown" >
+                <TextBlock  HorizontalAlignment ="Stretch" VerticalAlignment="Center" TextAlignment="Center"
+                            TextWrapping="Wrap"  >View</TextBlock>
+            </Border>
+            <Border  Name="Gamesettings" Style="{StaticResource Menu}" Grid.Row="0" Grid.Column="2" Margin ="3 4 0 4"
+                     HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="1" MouseDown="Gamesettings_MouseDown" >
+                <TextBlock   HorizontalAlignment ="Stretch" VerticalAlignment="Center" TextAlignment="Center"
+                             TextWrapping="Wrap"  >Game Settings</TextBlock>
+            </Border>
+            <Border x:Name="IpText" Grid.Row="0" Grid.Column="3" BorderThickness="0" BorderBrush="#000000"  Margin ="0"
+                    HorizontalAlignment ="Right" VerticalAlignment="Stretch" MouseDown="ModOrigGrid_MouseDown">
+                <TextBlock Name="YourIp" Foreground="#666666" FontSize="16"  HorizontalAlignment ="Stretch" VerticalAlignment="Center"
+                           TextAlignment="Center"  TextWrapping="Wrap" Margin ="0 2 6 2"></TextBlock>
+            </Border>
+
+        <!-- Closed the container Menu -->
+        </Grid>
+
+        <!-- Separator Menu and block connection -->
+        
+        <GridSplitter Grid.Row="1" Height="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Background="#dddddd" ></GridSplitter>
+
+        <!-- Local connection container -->
+
+        <Grid x:Name="LocalGrid" Grid.Row="2" Grid.Column="0" Grid.IsSharedSizeScope="True" Margin="4 0 4 0" Background ="#999999">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Border BorderBrush="#cccccc" BorderThickness="0 0 0 1" Grid.Row="0" Grid.Column="0" Margin ="0 0 0 0"></Border>
+            <Border BorderBrush="#cccccc" BorderThickness="0 0 0 1" Grid.Row="0" Grid.Column="1"></Border>
+            <Border BorderBrush="#cccccc" BorderThickness="0 0 0 1" Grid.Row="0" Grid.Column="2"></Border>
+            <Border BorderBrush="#cccccc" BorderThickness="1 0 1 1" Grid.Row="0" Grid.Column="3"></Border>
+            <Border BorderBrush="#cccccc" BorderThickness="0 0 0 1" Grid.Row="0" Grid.Column="4"></Border>
+            <Border BorderBrush="#cccccc" BorderThickness="0 0 0 1" Grid.Row="0" Grid.Column="5"></Border>
+            <Border BorderBrush="#cccccc" BorderThickness="0 0 0 1" Grid.Row="0" Grid.Column="6"></Border>
+            <Border  Name="Past" Style="{StaticResource LocalMod}" Grid.Row="0" Grid.Column="0" Margin ="3 4 0 4"
+                     HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="1" MouseDown="Past_MouseDown"  >
+                <TextBlock  Width="40" HorizontalAlignment ="Center" VerticalAlignment="Center" TextAlignment="Center"
+                            TextWrapping="Wrap" >Past</TextBlock>
+            </Border>
+            <Border  Name="KeyInp" Grid.Row="0" Grid.Column="1" BorderBrush="#555555" BorderThickness="0 2 0 2" Margin ="-1 4 -1 4"
+                     HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" >
+                <TextBox x:Name="KeyInput" Style="{StaticResource placeHolder}" Tag ="Input Key" Height="26" Margin ="0 -1 0 -1"
+                         VerticalAlignment="Center" HorizontalAlignment ="Stretch"  TextAlignment="Center"
+                          VerticalContentAlignment="Center"  Background="#cccccc" MaxLines="1"/>
+            </Border>
+            <Border  Name="Save" Style="{StaticResource LocalMod}" Grid.Row="0" Grid.Column="2" Margin ="0 4 3 4"
+                     HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="1" MouseDown="Save_MouseDown" >
+                <TextBlock  Width="40" HorizontalAlignment ="Center" VerticalAlignment="Center" TextAlignment="Center"
+                            TextWrapping="Wrap"  >Save</TextBlock>
+            </Border>
+            <Border  Name="Join" Height="20" Style="{StaticResource JoinCreate}" Grid.Row="0" Grid.Column="3" Margin ="5 4 5 4"
+                     HorizontalAlignment ="Stretch" VerticalAlignment="Center" Panel.ZIndex="1" Padding="0 4 0 0" MouseDown="Join_MouseDown">
+                <TextBlock   HorizontalAlignment ="Stretch" VerticalAlignment="Center" TextAlignment="Center"  TextWrapping="Wrap"
+                             FontFamily="Aharoni"  >Join</TextBlock>
+            </Border>
+            <Border  x:Name="Create" Height="20" Style="{StaticResource JoinCreate}" Grid.Row="0" Grid.Column="4" Margin ="5 4 5 4"
+                     HorizontalAlignment ="Stretch" VerticalAlignment="Center" Panel.ZIndex="1" Padding="0 4 0 0" MouseDown="Create_MouseDown" >
+                <TextBlock    HorizontalAlignment ="Stretch" VerticalAlignment="Center" TextAlignment="Center"  TextWrapping="Wrap"
+                              FontFamily="Aharoni"  >Create</TextBlock>
+            </Border>
+
+        <!-- Closed the local connection container -->
+        </Grid>
+
+        <Grid x:Name="WebBtnGrid" Grid.Row="3" Grid.Column="0" Grid.IsSharedSizeScope="True" Margin ="4 0 4 0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="36"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="36"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Border BorderBrush="#555555" BorderThickness="0" Grid.Row="0" Grid.Column="0" Margin ="0 0 0 0" Background ="#c0c0c0"></Border>
+            <Border BorderBrush="#555555" BorderThickness="1 0 1 0" Grid.Row="0" Grid.Column="1"></Border>
+            <Border BorderBrush="#555555" BorderThickness="0 1 0 1" Grid.Row="0" Grid.Column="2" Background="#888888"></Border>
+            <Border BorderBrush="#555555" BorderThickness="0 1 1 1" Grid.Row="0" Grid.Column="3" Background ="#888888"></Border>
+            <Border BorderBrush="#555555" BorderThickness="0 1 1 0" Grid.Row="0" Grid.Column="4" Background ="#afafaf"></Border>
+            <Button x:Name="CreateToServer" Height="32" Grid.Row="0"  Grid.Column="1" HorizontalAlignment ="Stretch"
+                    VerticalAlignment="Stretch"  Margin ="4 4 4 0" FontSize="14" Click="Btn_Create">Create</Button>
+            <Border x:Name="ShowSettings"  Grid.Row="0" Grid.Column="2" BorderThickness="0" BorderBrush="#000000"
+                    Margin ="1"  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" MouseEnter="ShowSettings_MouseEnter"
+                    MouseLeave="ShowSettings_MouseLeave" MouseDown="ShowSettings_MouseDown" >
+                <Grid x:Name="LobbySettingGrid" Height="28" Width="28">
+                    <TextBlock Name="Sett"  Style="{StaticResource Bold}" HorizontalAlignment ="Stretch" VerticalAlignment="Center"
+                               TextAlignment="Center"  TextWrapping="Wrap" ></TextBlock>
+                </Grid>
+            </Border>
+
+            <Border x:Name="Update"  Grid.Row="0" Grid.Column="12" BorderThickness="0" BorderBrush="#000000"  Margin ="1"
+                    HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" MouseDown="Update_MouseDown"  >
+                <Grid x:Name="UpdateGrid" Height="28" Width="28">
+                    <TextBlock Name="UpdateText"  Style="{StaticResource Bold}" HorizontalAlignment ="Stretch" VerticalAlignment="Center"
+                               TextAlignment="Center"  TextWrapping="Wrap" ></TextBlock>
+                    <Image Name="UpdateImg" Stretch="Fill" Grid.Row="0" Grid.Column="1"   Margin ="2"></Image>
+                </Grid>
+            </Border>
+
+            <Grid x:Name="LobSettings" Grid.Row="0" Grid.Column="3" Grid.IsSharedSizeScope="True" Margin ="4 0 4 0" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="54"/>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="78"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Border BorderBrush="#555555" BorderThickness="0 1 0 1" Grid.Row="0" Grid.Column="0" Background ="#888888"></Border>
+                <Border BorderBrush="#555555" BorderThickness="0 1 1 1" Grid.Row="0" Grid.Column="1" Background ="#888888"></Border>
+                <Border BorderBrush="#555555" BorderThickness="1 1 1 1" Grid.Row="0" Grid.Column="3" Background ="#888888"></Border>
+                <Border BorderBrush="#555555" BorderThickness="0 1 1 1" Grid.Row="0" Grid.Column="6" Background ="#888888"></Border>
+                <Border BorderBrush="#555555" BorderThickness="0 1 0 1" Grid.Row="0" Grid.Column="8" Background ="#888888"></Border>
+                <Border  BorderBrush="#555555" BorderThickness="1 1 1 1" Height="26" Grid.Row="0" Grid.Column="0" Margin ="4"
+                         HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="1" >
+                    <TextBox x:Name="LobbyName" Height="26" Grid.Column="3" Style="{StaticResource placeHolder}" Margin ="0 0 0 0"
+                             Tag="Lobby's Name" VerticalAlignment="Center" HorizontalAlignment ="Stretch"
+                         TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="LobbyName_TextChanged" Background="#eeeeee"
+                             PreviewKeyDown="LobbyName_PreviewKeyDown"/>
+                </Border>
+                <Border Grid.Row="0"   Grid.Column="1" Height="26" BorderThickness="0"  BorderBrush="#000000" Margin ="0 4 4 4"
+                        HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" >
+                <TextBlock Name="LobbyNameCount"  Grid.Row="0" Grid.Column="0" HorizontalAlignment ="Stretch" VerticalAlignment="Center"
+                           TextAlignment="Center" Padding="0" FontSize="12" TextWrapping="Wrap" Foreground="#333333" />
+                </Border>
+                <Border Grid.Row="0" Grid.Column="6" Height="26" BorderThickness="0"  BorderBrush="#000000" Margin ="0 4 4 4"
+                        HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" >
+                <TextBlock Name="PassCount"  Grid.Row="0" Grid.Column="0" HorizontalAlignment ="Stretch" VerticalAlignment="Center"
+                           TextAlignment="Center" Padding="0" FontSize="12" TextWrapping="Wrap" Foreground="#333333" />
+                </Border>
+                <Border Grid.Row="0" Grid.Column="8" Height="26" BorderThickness="0"  BorderBrush="#000000" Margin ="0 4 4 4" 
+                        HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" >
+                    <TextBlock Name="CommentCount"  Grid.Row="0" Grid.Column="0" HorizontalAlignment ="Stretch" VerticalAlignment="Center"
+                               TextAlignment="Center" Padding="0" FontSize="12" TextWrapping="Wrap" Foreground="#333333" > 7</TextBlock>
+                </Border>
+                <Border x:Name="ModOrigGrid"  Grid.Row="0" Grid.Column="2" BorderThickness="0" BorderBrush="#000000"  Margin ="1"
+                        HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" MouseDown="ModOrigGrid_MouseDown">
+                    <TextBlock Name="ModOrig"  Style="{StaticResource Bold}" HorizontalAlignment ="Stretch" VerticalAlignment="Center"
+                               TextAlignment="Center"  TextWrapping="Wrap" > mod</TextBlock>
+                </Border>
+                <ComboBox x:Name="LobbyType" Grid.Column="3" Height="22" Width="45" Margin ="3 4 4 4" SelectedIndex="0">
+                    <ComboBoxItem Content="FFA"/>
+                    <ComboBoxItem Content="1x1"/>
+                    <ComboBoxItem Content="2x2"/>
+                    <ComboBoxItem Content="3x3"/>
+                    <ComboBoxItem Content="4x4"/>
+                </ComboBox>
+                <Viewbox Stretch="Uniform"  Grid.Column="4" Margin ="4 4 2 4" HorizontalAlignment ="Center">
+                    <CheckBox x:Name="PassUse"  HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" Checked="PassUse_Checked"
+                              Unchecked="PassUse_Unchecked"  />
+                </Viewbox>
+                <Border  BorderBrush="#555555" BorderThickness="1 1 1 1" Height="26" Grid.Row="0" Grid.Column="5" Margin ="0 4 4 4"
+                         HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="1" >
+                    <TextBox x:Name="PasswInput" Height="28" Grid.Column="7" Style="{StaticResource placeHolder}" Tag="Password"
+                             FontSize ="10" VerticalAlignment="Center" HorizontalAlignment ="Stretch"
+                         TextAlignment="Center"  VerticalContentAlignment="Center" Background="#eeeeee"
+                             PreviewKeyDown="PasswInput_PreviewKeyDown" TextChanged="PasswInput_TextChanged"/>
+                </Border>
+                <Border  BorderBrush="#555555" BorderThickness="1 1 1 1" Height="26" Grid.Row="0" Grid.Column="7" Margin ="4 4 4 4"
+                         HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="1" >
+                <TextBox x:Name="CommentInput" Height="28" Grid.Column="9" Style="{StaticResource placeHolder}" Tag="Comment"
+                         VerticalAlignment="Center" HorizontalAlignment ="Stretch"  TextAlignment="Center"
+                         VerticalContentAlignment="Center" TextChanged="CommentInput_TextChanged" Background="#eeeeee"
+                         PreviewKeyDown="CommentInput_PreviewKeyDown"/>
+                </Border>
+
+            <!-- Closed the local connection container -->
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="WebGridInfo" Grid.Row="4" Grid.Column="0" Grid.IsSharedSizeScope="True" Margin ="4 0 4 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Border BorderBrush="#555555" BorderThickness="1 0 1 1" Grid.Row="0" ></Border>
+            <Border BorderBrush="#000000" BorderThickness="1 1 1 1" Grid.Row="1" ></Border>
+            <Border BorderBrush="#000000" BorderThickness="1 1 1 1" Grid.Row="2" ></Border>
+            <DataGrid x:Name="WebDataGrid" Grid.Row="0" Background="#777777" BorderBrush="#000000" BorderThickness="0" 
+                      HeadersVisibility="Column" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                      CanUserDeleteRows="False" ItemsSource="{Binding}" 
+          CanUserReorderColumns="False" SelectionUnit="FullRow" GridLinesVisibility ="All"
+          CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False"  HorizontalAlignment ="Stretch"
+                      VerticalAlignment="Stretch"  Margin ="2" ColumnHeaderHeight ="22" RowHeight ="22"
+                      LoadingRow="WebDataGrid_LoadingRow" SelectedCellsChanged="WebDataGrid_SelectedCellsChanged"
+                      MouseDoubleClick="WebDataGrid_MouseDoubleClick" MouseUp="WebDataGrid_MouseUp">
+                <DataGrid.ContextMenu>
+                    <ContextMenu x:Name="SortMenu" IsOpen="true"  Width="290" Visibility="Collapsed" >
+                        <MenuItem x:Name="Sort1" Header="Sort first: Mod(free), Original(free), others..." IsCheckable="True"
+                                  Checked="Sort1_Checked" Unchecked="Sort1_Unchecked"/>
+                        <MenuItem x:Name="Sort2" Header="Sort first: Original(free), Mod(free), others..." IsCheckable="True"
+                                  Checked="Sort2_Checked" Unchecked="Sort2_Unchecked"/>
+                        <MenuItem x:Name="Sort3" Header="Sort by map" IsCheckable="True" Checked="Sort3_Checked"
+                                  Unchecked="Sort3_Unchecked"/>
+                        <MenuItem x:Name="Sort4" Header="Sort by type" IsCheckable="True" Checked="Sort4_Checked"
+                                  Unchecked="Sort4_Unchecked"/>
+                        <MenuItem x:Name="Refresh" Header="Refresh Lobby list" Click="UpdateLobbyList"></MenuItem>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+                <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="FontSize" Value="12"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="Background" Value="#C0C0C0" />
+                    <Setter Property="BorderBrush" Value="Black" />
+                    <Setter Property="BorderThickness" Value="0,1,1,1" />
+                </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=ModOrigin}" Value="Mod">
+                                <Setter Property="Background" Value = "#bcf199" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=ModOrigin}" Value="Orig">
+                                <Setter Property="Background" Value = "#9bcfff" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=OpenCloseIngame}" Value="Close">
+                                <Setter Property="Background" Value = "#ee967b" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="N" Width="15" Binding="{Binding Number}" ElementStyle="{StaticResource Centering}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#C0C0C0" />
+                                <Setter Property="BorderBrush" Value="Black" />
+                                <Setter Property="BorderThickness" Value="1,1,1,1" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Lobby's Name" Width="*" Binding="{Binding Name}" ElementStyle="{StaticResource Centering}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#C0C0C0" />
+                                <Setter Property="BorderBrush" Value="Black" />
+                                <Setter Property="BorderThickness" Value="0,1,1,1" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="" Width="30" Binding="{Binding Count}" ElementStyle="{StaticResource Centering}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#C0C0C0" />
+                                <Setter Property="BorderBrush" Value="Black" />
+                                <Setter Property="BorderThickness" Value="0,1,1,1" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Map" Width="120" Binding="{Binding Map}" ElementStyle="{StaticResource Centering}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#C0C0C0" />
+                                <Setter Property="BorderBrush" Value="Black" />
+                                <Setter Property="BorderThickness" Value="0,1,1,1" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="Players"  Width="110" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <ComboBox x:Name ="AllPlayers" Grid.Column="0" Height="20" Width="20" ItemsSource="{Binding Players}" SelectedIndex="0" IsReadOnly="True" Style="{StaticResource HostOnly}" HorizontalAlignment ="Left" >
+                                    </ComboBox>
+                                    <TextBlock Name="ScoreText" Grid.Column="1" Text="{Binding Host}" HorizontalAlignment ="Stretch" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Padding ="2"></TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Type" Width="36" Binding="{Binding Type}" ElementStyle="{StaticResource Centering}">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="#C0C0C0" />
+                                <Setter Property="BorderBrush" Value="Black" />
+                                <Setter Property="BorderThickness" Value="0,1,1,1" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="Info"  Width="30" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox Name ="Information" Style="{StaticResource Info}" Height="20" Width="20"  SelectedIndex="0"
+                                          IsReadOnly="True" Margin ="1 0 0 0">
+                                    <Grid x:Name="MapSettingGrid" Margin ="2" >
+                                        <TextBlock Name="ScoreText" Text="{Binding Comment}" Width="200" Foreground ="White"
+                                                   HorizontalAlignment ="Stretch" VerticalAlignment="Center" TextAlignment="Left"
+                                                   TextWrapping="Wrap" Padding ="2"></TextBlock>
+                                    </Grid>
+                                </ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="" Width="20">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Style="{StaticResource  ImgClose}"  />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Join"  Width="90">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid  x:Name="PasInput1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <TextBox Name="PasInput" Text="{Binding PasswordInp, UpdateSourceTrigger=PropertyChanged}"
+                                             Grid.Column="0" Style="{StaticResource Passw}" Tag ="password" VerticalAlignment="Stretch"
+                                             HorizontalAlignment ="Left" Margin ="1 0 1 0" TextAlignment="Center" TextWrapping="Wrap"
+                                             VerticalContentAlignment="Center" MinWidth="65" MaxWidth="65" />
+                                    <Button Name ="JoinToLobby" Grid.Column="1" Style="{StaticResource BtnJoin}"
+                                            Tag="{Binding SelectedIndex, ElementName = WebDataGrid}"
+                                    Click="JoinToLobby_Click">
+                                        <StackPanel >
+                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Margin =" 0 -2 0 0" Style="{StaticResource TextJoin}"
+                                                       Tag="{Binding SelectedIndex, ElementName = WebDataGrid}"></TextBlock>
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+        </DataGrid>
+
+            <!-- Separator Menu and block connection -->
+            <GridSplitter Grid.Row="1" Height="2" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                          Background="White" ></GridSplitter>
+
+            <RichTextBox Name ="Information" Background="#bbbbbb" Foreground="#111111" IsReadOnly="True" Grid.Row="3"
+                         MinWidth="120" HorizontalAlignment ="Stretch" VerticalAlignment="Stretch"  Margin ="2 2 2 2"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"></RichTextBox>
+        </Grid>
+        
+    <!-- Closed the main container with all contents -->
+    </Grid>
+
+</Window>

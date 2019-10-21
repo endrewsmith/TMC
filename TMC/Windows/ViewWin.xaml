@@ -1,0 +1,142 @@
+﻿<Window x:Class="TMC.ViewWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TMC"
+        mc:Ignorable="d"
+        Title="View" Background="#FFB4B4B4" Height="250" Width="250" Closed="Window_Closed">
+
+    <!-- Main container with all contents -->
+
+    <Grid x:Name="MainGrid" Grid.IsSharedSizeScope="True" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="6*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border BorderBrush="#666666" BorderThickness="0 1 0 1" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                Background="#c5c5c5" ></Border>
+        <Border BorderBrush="#999999" BorderThickness="0 0 0 1" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ></Border>
+        <Border BorderBrush="#666666" BorderThickness="0 0 0 1" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ></Border>
+        <Border BorderBrush="#666666" BorderThickness="0 0 0 1" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
+                Background="#c5c5c5" ></Border>
+        <Border BorderBrush="#999999" BorderThickness="0 0 0 1" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" ></Border>
+        <Border BorderBrush="#999999" BorderThickness="0 0 0 1" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" ></Border>
+        <Border BorderBrush="#666666" BorderThickness="0 0 0 1" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3"
+                Background="#c5c5c5" ></Border>
+        <Border BorderBrush="#666666" BorderThickness="0 0 0 1" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" ></Border>
+        <Border BorderBrush="#999999" BorderThickness="0 0 0 1" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" ></Border>
+        <Viewbox Stretch="Uniform" Grid.Row="0" Grid.Column="2" Margin ="2  7 7 7" HorizontalAlignment ="Left" >
+            <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment ="Stretch"
+                       TextAlignment="Left" >Main Window:</TextBlock>
+        </Viewbox>
+        <Viewbox Stretch="Uniform" Grid.Row="1" Grid.Column="1" Margin ="2 10 10 10" HorizontalAlignment ="Left">
+            <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment ="Stretch"
+                       TextAlignment="Left" >Show modul Local Conection</TextBlock>
+        </Viewbox>
+        <Viewbox Stretch="Uniform" Grid.Row="2" Grid.Column="1" Margin ="2 10 10 10" HorizontalAlignment ="Left">
+            <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment ="Stretch"
+                       TextAlignment="Left" >Show top menu</TextBlock>
+        </Viewbox>
+        <Viewbox Stretch="Uniform" Grid.Row="3" Grid.Column="2" Margin ="2  7 7 7" HorizontalAlignment ="Left">
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment ="Stretch"
+                       TextAlignment="Center" Grid.ColumnSpan="2">Lobby Window:</TextBlock>
+        </Viewbox>
+        <Viewbox Stretch="Uniform" Grid.Row="4" Grid.Column="1" Margin ="2 10 10 10" HorizontalAlignment ="Left">
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment ="Stretch"
+                       TextAlignment="Left" >Show top and bottom module</TextBlock>
+        </Viewbox>
+        <Viewbox Stretch="Uniform" Grid.Row="5" Grid.Column="1" Margin ="2 10 10 10" HorizontalAlignment ="Left">
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment ="Stretch"
+                       TextAlignment="Left" >Show only top module</TextBlock>
+        </Viewbox>
+        <Viewbox Stretch="Uniform" Grid.Row="6" Grid.Column="1" Margin ="2 10 10 10" HorizontalAlignment ="Left">
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment ="Stretch"
+                       TextAlignment="Left" >Show only bottom module</TextBlock>
+        </Viewbox>
+        <Viewbox Stretch="Uniform" Grid.Row="8" Grid.Column="1" Margin ="2 10 10 10" HorizontalAlignment ="Left">
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment ="Stretch"
+                       TextAlignment="Left" >Disable sound</TextBlock>
+        </Viewbox>
+        <Viewbox Stretch="Uniform" Grid.Row="7" Grid.Column="2" Margin ="2  7 7 7" HorizontalAlignment ="Left">
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
+                       HorizontalAlignment ="Stretch" TextAlignment="Center"
+                       Grid.ColumnSpan="2">Others settings:</TextBlock>
+        </Viewbox>
+        <Grid x:Name="SendHotKeys" Grid.Row="9" Grid.Column="1" Grid.IsSharedSizeScope="True" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.2*"/>
+                <ColumnDefinition Width="0.7*"/>
+                <ColumnDefinition Width="0.2*"/>
+                <ColumnDefinition Width="0.9*"/>
+                <ColumnDefinition Width="0.2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Viewbox Stretch="Uniform" Grid.Row="0" Grid.Column="1" Margin ="0 8 8 10" HorizontalAlignment ="Left">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment ="Stretch" TextAlignment="Left"
+                           Foreground="#555555">Enter</TextBlock>
+            </Viewbox>
+            <Viewbox Stretch="Uniform" Grid.Row="0" Grid.Column="3" Margin ="0 8 8 10" HorizontalAlignment ="Left">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment ="Stretch" TextAlignment="Left"
+                           Foreground="#555555">Enter+Ctrl</TextBlock>
+            </Viewbox>
+            <Viewbox Stretch="Uniform" Grid.Row="0" Grid.Column="5" Margin ="0 8 8 10" HorizontalAlignment ="Left">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment ="Stretch" TextAlignment="Left"
+                           Foreground="#555555">Enter+Shift</TextBlock>
+            </Viewbox>
+            <Viewbox Stretch="Uniform" Grid.Row="0" Grid.Column="0"  >
+                <CheckBox x:Name="UseHotEnter"  HorizontalAlignment ="Stretch" VerticalAlignment="Center"
+                          Margin ="8 4 4 4" Checked="UseHotEnter_Checked" Unchecked="UseHotEnter_Unchecked" />
+            </Viewbox>
+            <Viewbox Stretch="Uniform" Grid.Row="0" Grid.Column="2"  >
+                <CheckBox x:Name="UseHotEnterCtrl"  HorizontalAlignment ="Stretch" VerticalAlignment="Center"
+                          Margin ="8 4 4 4" Checked="UseHotEnterCtrl_Checked" Unchecked="UseHotEnterCtrl_Unchecked" />
+            </Viewbox>
+            <Viewbox Stretch="Uniform" Grid.Row="0" Grid.Column="4"  >
+                <CheckBox x:Name="UseHotEnterShift"  HorizontalAlignment ="Stretch" VerticalAlignment="Center"
+                          Margin ="8 4 4 4" Checked="UseHotEnterShift_Checked" Unchecked="UseHotEnterShift_Unchecked" />
+            </Viewbox>
+        </Grid>
+        <Viewbox Stretch="Uniform" Grid.Row="1" Grid.Column="0"  >
+            <CheckBox x:Name="UseLocalM"  HorizontalAlignment ="Center" VerticalAlignment="Center" Margin ="10" Click="UseLocalM_Click" />
+        </Viewbox>
+        <Viewbox Stretch="Uniform" Grid.Row="2" Grid.Column="0"  >
+            <CheckBox x:Name="UseTopMenu"  HorizontalAlignment ="Center" VerticalAlignment="Center" Margin ="10" Click="UseTopMenu_Click" />
+        </Viewbox>
+        <Viewbox Stretch="Uniform" Grid.Row="4" Grid.Column="0"  >
+            <CheckBox x:Name="UseBouthM" HorizontalAlignment ="Center" VerticalAlignment="Center" Margin ="10" Checked="UseBouthM_Checked"
+                      Unchecked="UseBouthM_Unchecked" />
+        </Viewbox>
+        <Viewbox Stretch="Uniform" Grid.Row="5" Grid.Column="0"  >
+            <CheckBox x:Name="UseTopM" HorizontalAlignment ="Center" VerticalAlignment="Center" Margin ="10" Checked="UseTopM_Checked"
+                      Unchecked="UseTopM_Unchecked" />
+        </Viewbox>
+        <Viewbox Stretch="Uniform" Grid.Row="6" Grid.Column="0"  >
+            <CheckBox x:Name="UseBottomM" HorizontalAlignment ="Center" VerticalAlignment="Center" Margin ="10" Checked="UseBottomM_Checked"
+                      Unchecked="UseBottomM_Unchecked" />
+        </Viewbox>
+        <Viewbox Stretch="Uniform" Grid.Row="8" Grid.Column="0"  >
+            <CheckBox x:Name="UseSound" HorizontalAlignment ="Center" VerticalAlignment="Center" Margin ="10" Checked="UseBottomM_Checked"
+                      Unchecked="UseBottomM_Unchecked" />
+        </Viewbox>
+        <Viewbox Stretch="Uniform" Grid.Row="9" Grid.Column="0" Margin ="8 8 8 10" HorizontalAlignment ="Center">
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment ="Stretch" TextAlignment="Left" Foreground="#555555">Send:</TextBlock>
+        </Viewbox>
+    <!-- Closed the main container with all contents -->
+    </Grid>
+</Window>
