@@ -11,4 +11,4 @@ The project is written in C# (Wpf), built in VS2017, Win7(64)
 
 For Win7 and higher.
 
-PS At the moment, the program completely copes with its functions on most tested systems, but constantly improving.
+PS Now, the program completely copes with its functions on most tested systems, but constantly improving.
